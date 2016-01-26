@@ -1,13 +1,11 @@
-import { INCREASE, DECREASE } from '../actions';
+import { ADD_TODO } from '../actions';
 
-const initalState = { counter: 0 };
+const initalState = { todos: [{title: 'Demo', desc: 'ABC easy as 123', date: Date.now(), completed: false}] };
 
 export default function counterApp(state = initalState, action) {
   switch(action.type) {
-  case INCREASE:
-    return { ...state, counter: state.counter + 1 };
-  case DECREASE:
-    return { ...state, counter: state.counter - 1 };
+  case ADD_TODO:
+    return { ...state, todos: [action.payload, ...state.todos] };
   default:
     return state;
   }

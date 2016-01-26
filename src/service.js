@@ -1,9 +1,9 @@
-var version = 'v3::';
+var version = 'v0.0.1::';
 
 var fundamentals = [
-  '/',
-  '/index.js',
-  '/worker.js'
+  // '/',
+  // '/index.js',
+  // '/worker.js'
 ];
 
 self.addEventListener('install', function (event) {

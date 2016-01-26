@@ -1,15 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Counter from './components/Counter';
-import Button from './components/Button';
-import { INCREASE, DECREASE } from './actions';
+import todoList from './components/Todo/todoList';
 
 const worker = new Worker('worker.js');
 
-navigator.serviceWorker.register('/service.js');
+//navigator.serviceWorker.register('/service.js');
 
-const post = (type, payload) => () => worker.postMessage({type, payload});
+// Action is  { type, payload }
+const post = (action) => () => worker.postMessage(action);
 
 class App extends React.Component {
   constructor(props) {
@@ -22,11 +21,7 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div>
-        <Counter {...this.state}/>
-        <Button onClick={post(INCREASE)} text="+"/>
-        <Button onClick={post(DECREASE)} text="-"/>
-      </div>
+      <todoList {...this.state} post={post} />
     );
   }
 }
