@@ -1,4 +1,4 @@
-var version = 'v0.0.3::';
+var version = 'v0.0.4::';
 
 var fundamentals = [
   '/',
@@ -36,7 +36,10 @@ self.addEventListener('activate', function activator (event) {
 });
 
 
-self.addEventListener('fetch', function (event) {
-  var request = event.request;
-  event.respondWith(fetch(request));
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      return response || fetch(event.request);
+    })
+  );
 });
