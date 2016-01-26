@@ -571,10 +571,13 @@ exports.__esModule = true;
 exports.addTodo = addTodo;
 exports.deleteTodo = deleteTodo;
 exports.completeTodo = completeTodo;
+exports.fetchTodo = fetchTodo;
+exports.recieveTodo = recieveTodo;
 var ADD_TODO = exports.ADD_TODO = 'ADD_TODO';
 var DELETE_TODO = exports.DELETE_TODO = 'DELETE_TODO';
 var COMPLETE_TODO = exports.COMPLETE_TODO = 'COMPLETE_TODO';
-var SYNC_TODO = exports.SYNC_TODO = 'SYNC_TODO';
+var FETCH_TODO = exports.FETCH_TODO = 'FETCH_TODO';
+var RECIEVE_TODO = exports.RECIEVE_TODO = 'RECIEVE_TODO';
 
 function addTodo(title, description, time, completed) {
   return {
@@ -597,6 +600,19 @@ function completeTodo(id) {
   };
 }
 
+function fetchTodo() {
+  return {
+    type: FETCH_TODO
+  };
+}
+
+function recieveTodo(response) {
+  return {
+    type: RECIEVE_TODO,
+    payload: response.json()
+  };
+}
+
 },{}],11:[function(require,module,exports){
 'use strict';
 
@@ -608,8 +624,9 @@ exports.default = counterApp;
 var _actions = require('../actions');
 
 var initalState = {
-  uid: 4,
-  todos: [{ id: 0, title: 'Demo 1', desc: 'ABC easy as 123', time: Date.now(), completed: false }, { id: 1, title: 'Demo 2', desc: 'ABC easy as 123', time: Date.now(), completed: false }, { id: 2, title: 'Demo 3', desc: 'ABC easy as 123', time: Date.now(), completed: false }, { id: 3, title: 'Demo 4', desc: 'ABC easy as 123', time: Date.now(), completed: false }]
+  isFetching: false,
+  uid: 0,
+  todos: []
 };
 
 function counterApp() {
@@ -631,8 +648,8 @@ function counterApp() {
       return _extends({}, state, { todos: state.todos.filter(function (d) {
           return d.id !== action.payload.id;
         }) });
-    case _actions.SYNC_TODO:
-      return _extends({}, state);
+    case _actions.FETCH_TODO:
+      return _extends({}, state, { isFetching: true });
     default:
       return state;
   }

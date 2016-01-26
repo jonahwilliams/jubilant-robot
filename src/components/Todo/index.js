@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { addTodo, deleteTodo, completeTodo, SYNC_TODO } from '../../actions';
+import { addTodo, deleteTodo, completeTodo } from '../../actions';
 
 function TodoItem(props) {
   const done = props.completed ? 'Done' : 'Not Done';
@@ -9,8 +9,8 @@ function TodoItem(props) {
       <p>{ props.desc }</p>
       <p>{ done }</p>
       <p>{ new Date(props.time).toLocaleString() }</p>
-      <input type="button" class="btn btn-default" onClick={props.post(completeTodo(props.id))} value="Complete"/>
-      <input type="button" class="btn btn-default" onClick={props.post(deleteTodo(props.id))} value="Delete" />
+      <input type="button" className="btn btn-default" onClick={props.post(completeTodo(props.id))} value="Complete"/>
+      <input type="button" className="btn btn-default" onClick={props.post(deleteTodo(props.id))} value="Delete" />
     </div>
   );
 }
@@ -49,7 +49,7 @@ class TodoAdd extends Component {
   }
   render() {
     return (
-      <div id="todoButtons">
+      <div id="todoButtons" className="col-md-4 col-offset-4">
         <form onSubmit={this.onSubmit} className="form-group">
           <input type="text"
             id="title"
@@ -63,7 +63,7 @@ class TodoAdd extends Component {
             value={this.state.description}
             onChange={this.onChange}
             placeholder="Description"/>
-          <input class="btn btn-default" type="submit" />
+          <input className="btn btn-default" type="submit" />
         </form>
       </div>
     );
@@ -79,9 +79,6 @@ export default class TodoList extends Component {
     return todos.map(todo => {
       return (<li key={todo.id}><TodoItem {...todo} post={this.props.post}/></li>);
     });
-  }
-  componentWillMount() {
-    this.props.post({type: SYNC_TODO})();
   }
   render() {
 

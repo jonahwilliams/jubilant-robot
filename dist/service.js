@@ -1,9 +1,12 @@
-var version = 'v0.0.1::';
+var version = 'v0.0.3::';
 
 var fundamentals = [
-  // '/',
-  // '/index.js',
-  // '/worker.js'
+  '/',
+  '/index.js',
+  '/worker.js',
+  '/service.js',
+  '/vendor/bootstrap-theme.min.css',
+  '/vendor/bootstrap.min.css'
 ];
 
 self.addEventListener('install', function (event) {
@@ -35,7 +38,5 @@ self.addEventListener('activate', function activator (event) {
 
 self.addEventListener('fetch', function (event) {
   var request = event.request;
-  console.log(request);
   event.respondWith(fetch(request));
-  return;
 });

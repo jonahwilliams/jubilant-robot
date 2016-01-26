@@ -18938,10 +18938,13 @@ exports.__esModule = true;
 exports.addTodo = addTodo;
 exports.deleteTodo = deleteTodo;
 exports.completeTodo = completeTodo;
+exports.fetchTodo = fetchTodo;
+exports.recieveTodo = recieveTodo;
 var ADD_TODO = exports.ADD_TODO = 'ADD_TODO';
 var DELETE_TODO = exports.DELETE_TODO = 'DELETE_TODO';
 var COMPLETE_TODO = exports.COMPLETE_TODO = 'COMPLETE_TODO';
-var SYNC_TODO = exports.SYNC_TODO = 'SYNC_TODO';
+var FETCH_TODO = exports.FETCH_TODO = 'FETCH_TODO';
+var RECIEVE_TODO = exports.RECIEVE_TODO = 'RECIEVE_TODO';
 
 function addTodo(title, description, time, completed) {
   return {
@@ -18961,6 +18964,19 @@ function completeTodo(id) {
   return {
     type: COMPLETE_TODO,
     payload: { id: id }
+  };
+}
+
+function fetchTodo() {
+  return {
+    type: FETCH_TODO
+  };
+}
+
+function recieveTodo(response) {
+  return {
+    type: RECIEVE_TODO,
+    payload: response.json()
   };
 }
 
@@ -19010,8 +19026,8 @@ function TodoItem(props) {
       null,
       new Date(props.time).toLocaleString()
     ),
-    _react2.default.createElement('input', { type: 'button', onClick: props.post((0, _actions.completeTodo)(props.id)), value: 'Complete' }),
-    _react2.default.createElement('input', { type: 'button', onClick: props.post((0, _actions.deleteTodo)(props.id)), value: 'Delete' })
+    _react2.default.createElement('input', { type: 'button', className: 'btn btn-default', onClick: props.post((0, _actions.completeTodo)(props.id)), value: 'Complete' }),
+    _react2.default.createElement('input', { type: 'button', className: 'btn btn-default', onClick: props.post((0, _actions.deleteTodo)(props.id)), value: 'Delete' })
   );
 }
 
@@ -19055,21 +19071,23 @@ var TodoAdd = function (_Component) {
   TodoAdd.prototype.render = function render() {
     return _react2.default.createElement(
       'div',
-      { id: 'todoButtons' },
+      { id: 'todoButtons', className: 'col-md-4 col-offset-4' },
       _react2.default.createElement(
         'form',
-        { onSubmit: this.onSubmit },
+        { onSubmit: this.onSubmit, className: 'form-group' },
         _react2.default.createElement('input', { type: 'text',
           id: 'title',
+          className: 'form-control',
           value: this.state.title,
           onChange: this.onChange,
           placeholder: 'Title' }),
         _react2.default.createElement('input', { type: 'text',
           id: 'description',
+          className: 'form-control',
           value: this.state.description,
           onChange: this.onChange,
           placeholder: 'Description' }),
-        _react2.default.createElement('input', { type: 'submit' })
+        _react2.default.createElement('input', { className: 'btn btn-default', type: 'submit' })
       )
     );
   };
@@ -19103,15 +19121,11 @@ var TodoList = function (_Component2) {
     });
   };
 
-  TodoList.prototype.componentWillMount = function componentWillMount() {
-    this.props.post({ type: _actions.SYNC_TODO })();
-  };
-
   TodoList.prototype.render = function render() {
 
     return _react2.default.createElement(
       'div',
-      null,
+      { className: 'container col-md-10 col-offset-1' },
       _react2.default.createElement(
         'h1',
         null,
@@ -19158,7 +19172,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var worker = new Worker('worker.js');
 
-//navigator.serviceWorker.register('/service.js');
+navigator.serviceWorker.register('/service.js');
 
 // Action is  { type, payload }
 var post = function post(action) {

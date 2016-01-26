@@ -1,8 +1,10 @@
-var version = 'v0.0.1::';
+var version = 'v0.0.3::';
 
 var fundamentals = [
+  '/',
   '/index.js',
   '/worker.js',
+  '/service.js',
   '/vendor/bootstrap-theme.min.css',
   '/vendor/bootstrap.min.css'
 ];
