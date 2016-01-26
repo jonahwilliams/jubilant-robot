@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import todoList from './components/Todo/todoList';
+import TodoList from './components/Todo/';
 
 const worker = new Worker('worker.js');
 
-//navigator.serviceWorker.register('/service.js');
+navigator.serviceWorker.register('/service.js');
 
 // Action is  { type, payload }
 const post = (action) => () => worker.postMessage(action);
@@ -21,7 +21,7 @@ class App extends React.Component {
   }
   render() {
     return (
-      <todoList {...this.state} post={post} />
+      <TodoList {...this.state} post={post} />
     );
   }
 }

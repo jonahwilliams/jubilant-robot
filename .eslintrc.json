@@ -26,7 +26,8 @@
     "ecmaFeatures": {
         "jsx": true,
         "experimentalObjectRestSpread": true,
-        "modules": true
+        "modules": true,
+        "async": true
     },
     "plugins": [
         "react"
