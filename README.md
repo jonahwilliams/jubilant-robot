@@ -5,9 +5,7 @@ React/Redux Application.  Redux is implemented in a Webworker to see if we can g
 to build the application, run
 
 ```
-browserify src/index.js -o dist/index.js -t [ babelify ] &&
-    browserify src/worker.js -o dist/worker.js -t [ babelify ] &&
-    cp src/service.js dist/service.js
+gulp compile
 ```
 
-This requires you to have browserify and babelify installed globally.  Then run `node server.js` and visit the page at least once to enable offline mode.
+This requires you to have gulp installed globally.  Then run `node server.js` and visit the page at least once to enable offline mode.
