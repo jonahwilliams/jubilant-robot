@@ -1,4 +1,4 @@
-var version = 'v0.0.4::';
+var version = 'v0.0.11::';
 
 var fundamentals = [
   '/',
