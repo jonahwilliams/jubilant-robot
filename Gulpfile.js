@@ -13,7 +13,6 @@ const config = {
   env: 'production'
 };
 
-process.env.NODE_ENV = config.env;
 
 gulp.task('make-index', () => {
   browserify('./src/index.js', { debug: config.debug})

@@ -1,15 +1,31 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import { ADD_TODO, COMPLETE_TODO, DELETE_TODO } from './actions';
+import { addTodoDB, deleteTodoDB, completeTodoDB, getAllTodoDB } from './database';
+import thunk from 'redux-thunk';
 import mainReducer from './reducers';
 
-let store = createStore(mainReducer);
+const createThunkStore = applyMiddleware(thunk)(createStore);
+let store = createThunkStore(mainReducer);
 
-self.postMessage(store.getState());
+
+store.dispatch(getAllTodoDB());
 
 self.onmessage = function(e) {
-  store.dispatch(e.data);
+  switch(e.data.type) {
+  case ADD_TODO:
+    store.dispatch(addTodoDB(e.data.payload));
+    break;
+  case COMPLETE_TODO:
+    store.dispatch(completeTodoDB(e.data.payload._id));
+    break;
+  case DELETE_TODO:
+    store.dispatch(deleteTodoDB(e.data.payload._id));
+    break;
+  default:
+    break;
+  }
 };
 
-const salf = self;
 store.subscribe(function() {
-  salf.postMessage(store.getState());
+  self.postMessage(store.getState());
 });
