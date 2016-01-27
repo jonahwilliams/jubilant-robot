@@ -1,4 +1,4 @@
-var version = 'v0.0.11::';
+var version = 'v0.1.2::';
 
 var fundamentals = [
   '/',
@@ -6,7 +6,7 @@ var fundamentals = [
   '/worker.js',
   '/service.js',
   '/vendor/bootstrap-theme.min.css',
-  '/vendor/bootstrap.min.css'
+  '/vendor/bootstrap.css'
 ];
 
 self.addEventListener('install', function (event) {

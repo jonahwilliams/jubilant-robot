@@ -4,14 +4,24 @@ import { addTodo, deleteTodo, completeTodo } from '../../actions';
 function TodoItem(props) {
   const done = props.completed ? 'Done' : 'Not Done';
   return (
-    <div className='todoItem'>
-      <h3>{ props.title }</h3>
-      <p>{ props.desc }</p>
-      <p>{ done }</p>
-      <p>{ new Date(props.time).toLocaleString() }</p>
-      <input type="button" className="btn btn-default" onClick={props.post(completeTodo(props.id))} value="Complete"/>
-      <input type="button" className="btn btn-default" onClick={props.post(deleteTodo(props.id))} value="Delete" />
+    <div className="card" key={props.id}>
+        <h3 className="card-header">{ done }</h3>
+    <div className="card-block">
+      <h4 className="card-title">{ props.title }</h4>
+      <p className="card-text">{ props.description }</p>
+      <input type="button"
+        className="btn btn-primary"
+        onClick={props.post(completeTodo(props.id))}
+        value="Complete"/>
+      <input type="button"
+        className="btn btn-default"
+        onClick={props.post(deleteTodo(props.id))}
+        value="Delete"/>
     </div>
+    <div className="card-footer text-muted">
+      { 'created at ' + new Date(props.time).toLocaleString() }
+    </div>
+  </div>
   );
 }
 
@@ -49,7 +59,8 @@ class TodoAdd extends Component {
   }
   render() {
     return (
-      <div id="todoButtons" className="col-md-4 col-offset-4">
+      <div id="todoButtons"
+        className="col-md-4 col-offset-md-4 col-sm-4 col-offset-sm-4">
         <form onSubmit={this.onSubmit} className="form-group">
           <input type="text"
             id="title"
@@ -77,17 +88,18 @@ export default class TodoList extends Component {
   }
   makeTodos(todos = []) {
     return todos.map(todo => {
-      return (<li key={todo.id}><TodoItem {...todo} post={this.props.post}/></li>);
+      return (<TodoItem {...todo} post={this.props.post}/>);
     });
   }
   render() {
 
     return (
-      <div className="container col-md-10 col-offset-1">
-        <h1>TodoList</h1>
-        <ul className="todo-list">
+      <div className="container col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1">
+        <h1 style={{margin: 'auto'}}>TodoList</h1>
+        <ul>
           { this.makeTodos(this.props.todos) }
         </ul>
+        <br/>
         <TodoAdd post={ this.props.post }/>
       </div>
     );

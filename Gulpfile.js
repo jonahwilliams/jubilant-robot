@@ -57,4 +57,8 @@ gulp.task('html', () => {
 });
 
 
-gulp.task('compile', ['make-index', 'make-worker', 'make-service-worker', 'html']);
+gulp.task(
+  'compile',
+  ['make-index', 'make-worker', 'make-service-worker', 'html'],
+  () => { return; }
+);
