@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { addTodo, deleteTodo, completeTodo } from '../../actions';
+import { addTodo, deleteTodo, completeTodo, setVisibilityFilter, VISIBILITY_FILTERS } from '../../actions';
 
 function TodoItem(props) {
   const done = props.completed ? 'Done' : 'Not Done';
@@ -23,6 +23,28 @@ function TodoItem(props) {
     </div>
   </div>
   );
+}
+
+class TodoFilter extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { filter: VISIBILITY_FILTERS.ALL };
+    this.onChange = this.onChange.bind(this);
+  }
+  onChange(e) {
+    const filter = e.target.value;
+    this.setState({ filter });
+    this.props.post(setVisibilityFilter(filter))();
+  }
+  render() {
+    return (
+      <select value={this.state.filter} onChange={this.onChange}>
+        <option value={VISIBILITY_FILTERS.ALL}>Show All</option>
+        <option value={VISIBILITY_FILTERS.COMPLETED}>Show Completed</option>
+        <option value={VISIBILITY_FILTERS.INCOMPLETE}>Show Incomplete</option>
+      </select>
+    );
+  }
 }
 
 
@@ -101,6 +123,7 @@ export default class TodoList extends Component {
         </ul>
         <br/>
         <TodoAdd post={ this.props.post }/>
+        <TodoFilter post={ this.props.post }/>
       </div>
     );
   }

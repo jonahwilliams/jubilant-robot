@@ -1,7 +1,16 @@
 import PouchDB from 'pouchdb';
-import { RECIEVE_TODO } from '../actions';
+import Find from 'pouchdb-find';
+import { RECIEVE_TODO, VISIBILITY_FILTERS } from '../actions';
 
+PouchDB.plugin(Find);
 const db = new PouchDB('todos', { rev_limit: 0 , adaptor: 'idb'});
+
+// Initialize indexes
+db.createIndex({
+  index: {
+    fields: ['completed']
+  }
+});
 
 /* type todo = {
  *   _id: String,
@@ -15,49 +24,69 @@ const db = new PouchDB('todos', { rev_limit: 0 , adaptor: 'idb'});
 const dispatchTodos = d => {
   return {
     type: RECIEVE_TODO,
-    payload: d.rows.map(d => d.doc)
+    payload: d
   };
+};
+
+const setFilterQuery = (filter) => {
+  switch(filter) {
+  case VISIBILITY_FILTERS.ALL:
+    return db
+      .allDocs({ include_docs: true, descending: true})
+      .then(d => d.rows.map(x => x.doc));
+  case VISIBILITY_FILTERS.COMPLETED:
+    return db
+      .find({ selector: { completed: {$eq: true} }})
+      .then(d => d.docs);
+  case VISIBILITY_FILTERS.INCOMPLETE:
+    return db
+      .find({ selector: { completed: {$eq: false} }})
+      .then(d => d.docs);
+  }
 };
 
 // ::addTodoDb todo -> next -> ()
 export function addTodoDB(todo) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const filter = getState().visibilityFilter;
     return db
       .put({ ...todo })
-      .then(() => db.allDocs({ include_docs: true, descending: true}))
+      .then(() => setFilterQuery(filter))
       .then(d => dispatch(dispatchTodos(d)));
   };
 }
 
 // ::addTodoDb String -> next -> ()
 export function deleteTodoDB(_id) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const filter = getState().visibilityFilter;
     return db
       .get(_id)
       .then(d => db.remove(d._id, d._rev))
-      .then(() => db.allDocs({ include_docs: true, descending: true}))
+      .then(() => setFilterQuery(filter))
       .then(d => dispatch(dispatchTodos(d)));
   };
 }
 
 // ::removeTodoDB String -> next -> ()
 export function completeTodoDB(_id) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const filter = getState().visibilityFilter;
     return db
       .get(_id)
       .then(d => {
         const todo = { ...d, completed: true };
         return db.put(todo);
       })
-      .then(() => db.allDocs({ include_docs: true, descending: true}))
+      .then(() => setFilterQuery(filter))
       .then(d => dispatch(dispatchTodos(d)));
   };
 }
 
 export function getAllTodoDB() {
-  return (dispatch) => {
-    return db
-      .allDocs({ include_docs: true, descending: true })
+  return (dispatch, getState) => {
+    const filter = getState().visibilityFilter;
+    return setFilterQuery(filter)
       .then(d => dispatch(dispatchTodos(d)));
   };
 }

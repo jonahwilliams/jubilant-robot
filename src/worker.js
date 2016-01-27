@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
-import { ADD_TODO, COMPLETE_TODO, DELETE_TODO } from './actions';
+import { ADD_TODO, COMPLETE_TODO, DELETE_TODO, SET_VISIBILITY_FILTER } from './actions';
 import { addTodoDB, deleteTodoDB, completeTodoDB, getAllTodoDB } from './database';
 import thunk from 'redux-thunk';
 import mainReducer from './reducers';
@@ -21,7 +21,12 @@ self.onmessage = function(e) {
   case DELETE_TODO:
     store.dispatch(deleteTodoDB(e.data.payload._id));
     break;
+  case SET_VISIBILITY_FILTER:
+    store.dispatch(e.data);
+    store.dispatch(getAllTodoDB());
+    break;
   default:
+    store.dispatch(e.data);
     break;
   }
 };

@@ -40,7 +40,7 @@ gulp.task('make-worker', () => {
   })
   .pipe(source('worker.js'))
   .pipe(buffer())
-  .pipe(uglify())
+  //.pipe(uglify())
   .pipe(gulp.dest('./dist/'));
 });
 
