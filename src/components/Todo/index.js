@@ -4,7 +4,6 @@ import { addTodo, deleteTodo, completeTodo } from '../../actions';
 function TodoItem(props) {
   const done = props.completed ? 'Done' : 'Not Done';
   return (
-    <li key={props._id} >
     <div className="card">
         <h3 className="card-header">{ props.title }</h3>
     <div className="card-block">
@@ -23,7 +22,6 @@ function TodoItem(props) {
       { 'created at ' + new Date(props.time).toLocaleString() }
     </div>
   </div>
-  </li>
   );
 }
 
@@ -90,7 +88,7 @@ export default class TodoList extends Component {
   }
   makeTodos(todos = []) {
     return todos.map(todo => {
-      return (<TodoItem {...todo} post={this.props.post}/>);
+      return (<TodoItem {...todo} post={this.props.post} key={todo._id}/>);
     });
   }
   render() {
