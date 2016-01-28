@@ -10,6 +10,7 @@ export default function counterApp(state = initalState, action) {
   case SET_VISIBILITY_FILTER:
     return { ...state, visibilityFilter: action.payload.filter };
   case RECIEVE_TODO:
+    console.log(action.payload);
     return { ...state, todos: action.payload };
   default:
     return state;

@@ -33,7 +33,7 @@ const setFilterQuery = (filter) => {
   case VISIBILITY_FILTERS.ALL:
     return db
       .allDocs({ include_docs: true, descending: true})
-      .then(d => d.rows.map(x => x.doc));
+      .then(d => d.rows.map(x => x.doc).slice(1));
   case VISIBILITY_FILTERS.COMPLETED:
     return db
       .find({ selector: { completed: {$eq: true} }})

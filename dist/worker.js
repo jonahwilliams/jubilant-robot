@@ -17945,7 +17945,7 @@ var setFilterQuery = function setFilterQuery(filter) {
       return db.allDocs({ include_docs: true, descending: true }).then(function (d) {
         return d.rows.map(function (x) {
           return x.doc;
-        });
+        }).slice(1);
       });
     case _actions.VISIBILITY_FILTERS.COMPLETED:
       return db.find({ selector: { completed: { $eq: true } } }).then(function (d) {
@@ -18031,6 +18031,7 @@ function counterApp() {
     case _actions.SET_VISIBILITY_FILTER:
       return _extends({}, state, { visibilityFilter: action.payload.filter });
     case _actions.RECIEVE_TODO:
+      console.log(action.payload);
       return _extends({}, state, { todos: action.payload });
     default:
       return state;
